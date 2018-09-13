@@ -23,7 +23,7 @@ void delay(uint8_t delay)
     {
         i = 0;
         while(--i)
-        __asm__("");
+            __asm__("");
     }
 }
 
@@ -91,6 +91,7 @@ void leds_update(uint32_t data)
     // Disable output
     PORTB |=  (1<<OE);
 
+    spi_write_byte(255);
     spi_write_byte((uint8_t)(data >> 16));
     spi_write_byte((uint8_t)(data >> 8));
     spi_write_byte((uint8_t)(data));
@@ -142,6 +143,21 @@ int main(void)
 
     leds_update(0x00000000);
     delay(255);
+
+    spi_write_byte(0x00);
+    spi_write_byte(0x00);
+    spi_write_byte(0x00);
+    spi_write_byte(0x00);
+
+    spi_write_byte(0xff);
+    spi_write_byte(0x00);
+    spi_write_byte(0x00);
+    spi_write_byte(0x00);
+
+    spi_write_byte(0xff);
+    spi_write_byte(0xff);
+    spi_write_byte(0xff);
+    spi_write_byte(0xff);
 
     leds_blink(0x000003ff, 100, 100, 1);
     leds_blink(0x00fffc00, 100, 100, 1);

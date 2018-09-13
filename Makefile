@@ -21,6 +21,7 @@ $(PRG).elf: $(OBJ)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
 	$(SIZE) -C --mcu=$(MCU_TARGET) $(PRG).elf
 
+.PHONY: clean
 clean:
 	rm -rf *.o $(PRG).elf $(PRG).hex
 
@@ -31,6 +32,7 @@ hex:  $(PRG).hex
 
 install: load
 
+.PHONY: load
 load: $(PRG).hex
 	avrdude -p t13 -c usbasp -U flash:w:$< 
 
