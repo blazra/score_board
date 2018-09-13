@@ -9,7 +9,7 @@
 #define SW_C 3
 #define SW_A 4
 
-uint8_t score;
+uint8_t cursor;
 uint8_t id;
 uint8_t state;
 uint32_t leds;
@@ -70,6 +70,24 @@ unsigned char EEPROM_read(uint8_t ucAddress)
     return EEDR;
 }
 
+void EEPROM_write_32b(uint8_t address ,uint32_t data)
+{
+    EEPROM_write(address, data);
+    EEPROM_write(address+1, data>>8);
+    EEPROM_write(address+2, data>>16);
+    EEPROM_write(address+3, data>>24);
+}
+
+uint32_t EEPROM_read_32b(uint8_t address)
+{
+    uint32_t data = 0;
+    data = EEPROM_read(address);
+    data |= (uint32_t)EEPROM_read(address+1)<<8;
+    data |= (uint32_t)EEPROM_read(address+2)<<16;
+    data |= (uint32_t)EEPROM_read(address+3)<<24;
+    return data;
+}
+
 void spi_write_byte(uint8_t data)
 {
     for (uint8_t i = 0; i < 8; i++)
@@ -102,17 +120,17 @@ void leds_update(uint32_t data)
     PORTB &= ~(1<<OE);
 }
 
-void show_score(uint8_t score)
-{
-    uint8_t units = score % 10;
-    uint8_t tens = score / 10;
-    if((units == 0) && (tens != 0))
-    {
-        tens--;
-        units = 10;
-    }
-    leds_update( (0xfffffc00 << (10-units)) | ((0xffff << (10-tens)) & 0x03ff) );
-}
+// void show_score(uint8_t score)
+// {
+//     uint8_t units = score % 10;
+//     uint8_t tens = score / 10;
+//     if((units == 0) && (tens != 0))
+//     {
+//         tens--;
+//         units = 10;
+//     }
+//     leds_update( (0xfffffc00 << (10-units)) | ((0xffff << (10-tens)) & 0x03ff) );
+// }
 
 void leds_blink(uint32_t data, uint8_t duration, uint8_t blank, uint8_t num_of_blinks)
 {
@@ -171,16 +189,16 @@ int main(void)
 
     id = EEPROM_read(0);
     idum = id;
-    score = EEPROM_read(1);
+    leds = EEPROM_read_32b(3);
 
-    if(score > 110)
-        score = 0;
-    EEPROM_write(1, score);
+    //if(score > 110)
+    //    score = 0;
+    //EEPROM_write(1, score);
     
     
 
     
-    leds = 1<<10;
+    
     state = 0x00;
 
     while(1)
@@ -198,22 +216,27 @@ int main(void)
 
 
         //leds_update( (0xffff << (10-(score % 10)))  );
-        show_score(score);
+        //show_score(score);
+
+        leds_update(leds);
 
         if(~PINB & (1<<PINB3))
         {
-            score++;
-            show_score(score);
-            EEPROM_write(1, score);
+            if(cursor >= 19)
+                cursor = 0;
+            else
+                cursor++;
+            leds_update(leds);
+            EEPROM_write_32b(3, leds);
             delay(10);
             while(~PINB & (1<<SW_C))
                 ;
         }
         else if(~PINB & (1<<SW_A))
         {
-            score--;
-            show_score(score);
-            EEPROM_write(1, score);
+            leds ^= 1ul<<cursor;
+            leds_update(leds);
+            EEPROM_write_32b(3, leds);
             delay(10);
             while(~PINB & (1<<SW_A))
                 ;
