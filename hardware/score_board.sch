@@ -1,6 +1,6 @@
-EESchema Schematic File Version 4
+EESchema Schematic File Version 5
 LIBS:score_board-cache
-EELAYER 26 0
+EELAYER 29 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -8,7 +8,7 @@ Sheet 1 1
 Title "Score_board"
 Date "2018-05-04"
 Rev "1"
-Comp "68. PS Lvíčata"
+Comp "Radovan Blažek"
 Comment1 ""
 Comment2 ""
 Comment3 ""
@@ -78,7 +78,7 @@ Wire Wire Line
 Wire Wire Line
 	3150 7100 2900 7100
 $Comp
-L Mechanical:Mounting_Hole MK1
+L Mechanical:MountingHole MK1
 U 1 1 5ADAAA61
 P 6200 6900
 F 0 "MK1" H 6300 6946 50  0000 L CNN
@@ -89,7 +89,7 @@ F 3 "" H 6200 6900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mechanical:Mounting_Hole MK2
+L Mechanical:MountingHole MK2
 U 1 1 5ADAAD50
 P 6200 7100
 F 0 "MK2" H 6300 7146 50  0000 L CNN
@@ -100,7 +100,7 @@ F 3 "" H 6200 7100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mechanical:Mounting_Hole MK3
+L Mechanical:MountingHole MK3
 U 1 1 5ADAAD80
 P 6200 7300
 F 0 "MK3" H 6300 7346 50  0000 L CNN
@@ -111,7 +111,7 @@ F 3 "" H 6200 7300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mechanical:Mounting_Hole MK4
+L Mechanical:MountingHole MK4
 U 1 1 5ADAADB2
 P 6200 7500
 F 0 "MK4" H 6300 7546 50  0000 L CNN
@@ -347,17 +347,6 @@ Wire Wire Line
 Wire Wire Line
 	6050 3150 6050 3550
 Connection ~ 6050 3550
-$Comp
-L Connector_Specialized:AVR-ISP-6 J2
-U 1 1 5AE2B5FD
-P 1300 7000
-F 0 "J2" H 1020 7096 50  0000 R CNN
-F 1 "AVR-ISP-6" H 1020 7005 50  0000 R CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical_SMD" V 1050 7050 50  0001 C CNN
-F 3 "" H 25  6450 50  0001 C CNN
-	1    1300 7000
-	1    0    0    -1  
-$EndComp
 $Comp
 L power:+3.3V #PWR0111
 U 1 1 5AE2C8B1
@@ -1536,4 +1525,15 @@ Wire Wire Line
 	7450 3600 7650 3600
 Wire Wire Line
 	7450 3700 7650 3700
+$Comp
+L Connector:AVR-ISP-6 J2
+U 1 1 5AE2B5FD
+P 1300 7000
+F 0 "J2" H 1020 7096 50  0000 R CNN
+F 1 "AVR-ISP-6" H 1020 7005 50  0000 R CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical_SMD" V 1050 7050 50  0001 C CNN
+F 3 "" H 25  6450 50  0001 C CNN
+	1    1300 7000
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
